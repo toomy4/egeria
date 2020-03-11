@@ -603,8 +603,8 @@ public class AssetHandler
                 {
                     repositoryHandler.createRelationship(userId,
                                                          AssetMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                         schemaTypeGUID,
                                                          asset.getGUID(),
+                                                         schemaTypeGUID,
                                                          null,
                                                          methodName);
                 }
