@@ -216,7 +216,7 @@ public class AssetSchemaType extends AssetSchemaElement
     public String toString()
     {
         return "AssetSchemaType{" +
-                "parentAsset=" + parentAsset +
+                "parentAsset=" + parentAsset.getAssetName() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +

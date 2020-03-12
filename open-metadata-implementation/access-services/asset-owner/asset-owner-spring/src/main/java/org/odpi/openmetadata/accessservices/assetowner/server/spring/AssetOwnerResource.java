@@ -154,14 +154,23 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/schemas/{schemaTypeGUID}/schema-attributes")
+//    @PostMapping(path = "/schemas/{schemaTypeGUID}/schema-attributes")
+//
+//    public VoidResponse addSchemaAttributesToSchema(@PathVariable String                 serverName,
+//                                                    @PathVariable String                 userId,
+//                                                    @PathVariable String                 schemaTypeGUID,
+//                                                    @RequestBody  List<SchemaAttribute>  schemaAttributes)
+//    {
+//        return restAPI.addSchemaAttributesToSchema(serverName, userId, schemaTypeGUID, schemaAttributes);
+//    }
 
+    @PostMapping(path = "/schemas/{schemaTypeGUID}/schema-attributes")
     public VoidResponse addSchemaAttributesToSchema(@PathVariable String                 serverName,
                                                     @PathVariable String                 userId,
                                                     @PathVariable String                 schemaTypeGUID,
-                                                    @RequestBody  List<SchemaAttribute>  schemaAttributes)
+                                                    @RequestBody  SchemaRequestBody      schemaAttributes)
     {
-        return restAPI.addSchemaAttributesToSchema(serverName, userId, schemaTypeGUID, schemaAttributes);
+        return restAPI.addSchemaAttributesToSchema(serverName, userId, schemaTypeGUID, schemaAttributes.getSchemaAttributes());
     }
 
 

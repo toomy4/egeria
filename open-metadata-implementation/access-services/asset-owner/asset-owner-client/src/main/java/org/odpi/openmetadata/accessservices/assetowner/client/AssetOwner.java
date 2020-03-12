@@ -273,12 +273,15 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameter, methodName);
 
+        SchemaRequestBody  requestBody = new SchemaRequestBody();
+        requestBody.setSchemaAttributes(schemaAttributes);
+
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         schemaAttributes,
                                         serverName,
                                         userId,
-                                        schemaTypeGUID);
+                                        requestBody);
     }
 
 
