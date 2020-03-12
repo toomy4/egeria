@@ -278,10 +278,10 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        schemaAttributes,
+                                        requestBody,
                                         serverName,
                                         userId,
-                                        requestBody);
+                                        schemaTypeGUID);
     }
 
 
