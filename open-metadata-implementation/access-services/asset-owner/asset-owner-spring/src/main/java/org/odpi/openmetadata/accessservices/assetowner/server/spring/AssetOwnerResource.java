@@ -113,6 +113,25 @@ public class AssetOwnerResource
 
 
     /**
+     * Add a new schema
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param requestBody schema to add
+     * @return guid of the schema type or
+     *  InvalidParameterException full path or userId is null or
+     *  PropertyServerException problem accessing property server or
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/schema-types")
+    public GUIDResponse  addSchemaType(@PathVariable String            serverName,
+                                       @PathVariable String            userId,
+                                       @RequestBody  SchemaRequestBody requestBody)
+    {
+        return restAPI.addSchemaType(serverName, userId, requestBody);
+    }
+
+
+    /**
      * Links the supplied schema to the asset.  If the schema has the GUID set, it is assumed to refer to
      * an existing schema defined in the metadata repository.  If this schema is either not found, or
      * already attached to an asset, then an error occurs.  If the GUID is null then a new schemaType
@@ -130,13 +149,21 @@ public class AssetOwnerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/assets/{assetGUID}/schema-type")
-
     public GUIDResponse   addSchemaToAsset(@PathVariable String            serverName,
                                            @PathVariable String            userId,
                                            @PathVariable String            assetGUID,
                                            @RequestBody  SchemaRequestBody requestBody)
     {
         return restAPI.addSchemaToAsset(serverName, userId, assetGUID, requestBody);
+    }
+
+    @PostMapping(path = "/schema-attributes/{attributeGUID}/schema-type")
+    public GUIDResponse addSchemaToProperty(@PathVariable String            serverName,
+                                            @PathVariable String            userId,
+                                            @PathVariable String            attributeGUID,
+                                            @RequestBody  SchemaRequestBody requestBody)
+    {
+        return restAPI.addSchemaToProperty(serverName, userId, attributeGUID, requestBody);
     }
 
 
@@ -164,7 +191,7 @@ public class AssetOwnerResource
 //        return restAPI.addSchemaAttributesToSchema(serverName, userId, schemaTypeGUID, schemaAttributes);
 //    }
 
-    @PostMapping(path = "/schemas/{schemaTypeGUID}/schema-attributes")
+    @PostMapping(path = "/schema-types/{schemaTypeGUID}/schema-attributes")
     public VoidResponse addSchemaAttributesToSchema(@PathVariable String                 serverName,
                                                     @PathVariable String                 userId,
                                                     @PathVariable String                 schemaTypeGUID,

@@ -426,7 +426,7 @@ public class SchemaTypeHandler
                     SchemaType   attributeType = null;
                     if (attributeTypeEntity != null)
                     {
-                        attributeType = this.getSchemaTypeForAttribute(userId, attributeTypeEntity.getGUID(), methodName);
+                        attributeType = this.getSchemaTypeForAttribute(userId, schemaAttributeEntity.getGUID(), methodName);
                     }
 
                     SchemaAttributeConverter converter = new SchemaAttributeConverter(schemaAttributeEntity,
@@ -675,6 +675,50 @@ public class SchemaTypeHandler
                                               this.getSchemaAttributeTypeName(schemaAttribute),
                                               builder.getInstanceProperties(methodName),
                                               methodName);
+    }
+
+    public  String saveAssociatedSchemaType(String                 userId,
+                                           String                  attributeGUID,
+                                           SchemaType              schemaType,
+                                           List<SchemaAttribute>   schemaAttributes,
+                                           String                  methodName) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
+    {
+//        final String  assetGUIDParameter = "assetGUID";
+
+        if (attributeGUID != null)
+        {
+//            invalidParameterHandler.validateAssetInSupportedZone(attribute.getGUID(),
+//                    assetGUIDParameter,
+//                    attribute.getZoneMembership(),
+//                    this.getSupportedZones(userId, serviceName),
+//                    serviceName,
+//                    methodName);
+
+//            securityVerifier.validateUserForAssetAttachmentUpdate(userId, attribute);
+
+            if (schemaType != null)
+            {
+                String schemaTypeGUID = saveSchemaType( userId,
+                                                        schemaType,
+                                                        schemaAttributes,
+                                                        methodName);
+
+                if (schemaTypeGUID != null)
+                {
+                    repositoryHandler.createRelationship(   userId,
+                                                            SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                            attributeGUID,
+                                                            schemaTypeGUID,
+                                                            null,
+                                                            methodName);
+                }
+
+                return schemaTypeGUID;
+            }
+        }
+        return null;
     }
 
     /**
@@ -1008,7 +1052,7 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private String addSchemaType(String                userId,
+    public String addSchemaType(String                userId,
                                  SchemaType            schemaType) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException

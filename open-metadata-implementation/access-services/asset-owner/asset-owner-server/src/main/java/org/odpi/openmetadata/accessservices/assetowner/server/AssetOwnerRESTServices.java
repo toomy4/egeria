@@ -165,14 +165,16 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                handler.addAsset(userId,
-                                 typeName,
-                                 requestBody.getQualifiedName(),
-                                 requestBody.getDisplayName(),
-                                 requestBody.getDescription(),
-                                 requestBody.getAdditionalProperties(),
-                                 requestBody.getExtendedProperties(),
-                                 methodName);
+                String assetGUID = handler.addAsset(userId,
+                        typeName,
+                        requestBody.getQualifiedName(),
+                        requestBody.getDisplayName(),
+                        requestBody.getDescription(),
+                        requestBody.getAdditionalProperties(),
+                        requestBody.getExtendedProperties(),
+                        methodName);
+
+                response.setGUID(assetGUID);
             }
             else
             {
@@ -188,6 +190,40 @@ public class AssetOwnerRESTServices
         return response;
     }
 
+
+
+    public GUIDResponse addSchemaType(String serverName,
+                                      String userId,
+                                      SchemaRequestBody  requestBody) {
+        final String   methodName = "addSchemaType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.addSchemaType(userId, requestBody.getSchemaType()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
     /**
      * Links the supplied schema to the asset.  If the schema is not defined in the metadata repository, it
@@ -223,11 +259,54 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                handler.saveAssociatedSchemaType(userId,
-                                                 assetGUID,
-                                                 requestBody.getSchemaType(),
-                                                 requestBody.getSchemaAttributes(),
-                                                 methodName);
+                String schemaTypeGUID = handler.saveAssociatedSchemaType(userId,
+                        assetGUID,
+                        requestBody.getSchemaType(),
+                        requestBody.getSchemaAttributes(),
+                        methodName);
+
+                response.setGUID(schemaTypeGUID);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    public GUIDResponse   addSchemaToProperty(String             serverName,
+                                              String             userId,
+                                              String             propertyGUID,
+                                              SchemaRequestBody  requestBody)
+    {
+        final String   methodName = "addSchemaToProperty";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+
+                String schemaTypeGUID = handler.saveAssociatedSchemaType(userId,
+                        propertyGUID,
+                        requestBody.getSchemaType(),
+                        requestBody.getSchemaAttributes(),
+                        methodName);
+
+                response.setGUID(schemaTypeGUID);
             }
             else
             {
@@ -295,8 +374,6 @@ public class AssetOwnerRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
 
     /**
      * Adds a connection to an asset.  Assets can have multiple connections attached.

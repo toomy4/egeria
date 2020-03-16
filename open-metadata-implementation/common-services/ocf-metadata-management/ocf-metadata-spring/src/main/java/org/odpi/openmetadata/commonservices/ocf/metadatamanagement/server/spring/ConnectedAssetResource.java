@@ -637,7 +637,7 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @GetMapping(path = "/assets/{schemaTypeGUID}/schema-attributes")
+    @GetMapping(path = "/schemas/{schemaTypeGUID}/attributes")
 
     public SchemaAttributesResponse getSchemaAttributes(@PathVariable String  serverName,
                                                         @PathVariable String  serviceURLName,

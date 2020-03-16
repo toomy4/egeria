@@ -48,8 +48,8 @@ class ConnectedAssetComplexSchemaType extends AssetComplexSchemaType
                                                                             omasServerURL,
                                                                             schemaBean.getGUID(),
                                                                             parentAsset,
-                                                                            maxCacheSize,
                                                                             schemaAttributeCount,
+                                                                            maxCacheSize,
                                                                             restClient);
 
             }

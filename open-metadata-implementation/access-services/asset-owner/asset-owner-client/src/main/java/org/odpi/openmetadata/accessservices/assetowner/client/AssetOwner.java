@@ -197,6 +197,29 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
     }
 
 
+    public String   addSchemaType(String      userId,
+                                  SchemaType  schemaType) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        final String   methodName = "addSchemaType";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/schema-types";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        SchemaRequestBody  requestBody = new SchemaRequestBody();
+        requestBody.setSchemaType(schemaType);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                serverPlatformRootURL + urlTemplate,
+                requestBody,
+                serverName,
+                userId);
+
+        return restResult.getGUID();
+
+    }
+
     /**
      * Links the supplied schema to the asset.  If the schema has the GUID set, it is assumed to refer to
      * an existing schema defined in the metadata repository.  If this schema is either not found, or
@@ -246,6 +269,37 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
     }
 
+    public String addSchemaToProperty(String                userId,
+                                      String                attributeGUID,
+                                      SchemaType            schemaType,
+                                      List<SchemaAttribute> schemaAttributes) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String   methodName = "addSchemaToProperty";
+
+        final String   propertyGUIDParameter = "attributeGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/schema-attributes/{2}/schema-type";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(attributeGUID, propertyGUIDParameter, methodName);
+
+        SchemaRequestBody  requestBody = new SchemaRequestBody();
+
+        requestBody.setSchemaType(schemaType);
+        requestBody.setSchemaAttributes(schemaAttributes);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  attributeGUID);
+
+         return restResult.getGUID();
+
+    }
+
 
     /**
      * Adds attributes to a complex schema type like a relational table or a structured document.
@@ -268,7 +322,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         final String   methodName = "addSchemaAttributesToSchema";
 
         final String   schemaTypeGUIDParameter = "schemaTypeGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/schemas/{2}/schema-attributes";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/schema-types/{2}/schema-attributes";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameter, methodName);

@@ -186,6 +186,12 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                                                                     schemaAttribute,
                                                                     new AssetSchemaLink(schemaLinkBean)));
                         }
+                        else
+                        {
+                            resultList.add(new AssetSchemaAttribute(connectedAsset,
+                                                                    schemaAttribute,
+                                                                    (AssetSchemaType) null));
+                        }
                     }
                 }
 

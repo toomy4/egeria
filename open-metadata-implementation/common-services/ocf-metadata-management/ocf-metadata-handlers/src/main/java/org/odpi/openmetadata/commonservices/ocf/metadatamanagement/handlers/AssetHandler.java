@@ -535,18 +535,19 @@ public class AssetHandler
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
+     * @return
      */
-    public  void saveAssociatedSchemaType(String                   userId,
-                                          String                   assetGUID,
-                                          SchemaType               schemaType,
-                                          List<SchemaAttribute>    schemaAttributes,
-                                          String                   methodName) throws InvalidParameterException,
+    public String saveAssociatedSchemaType(String                   userId,
+                                           String                   assetGUID,
+                                           SchemaType               schemaType,
+                                           List<SchemaAttribute>    schemaAttributes,
+                                           String                   methodName) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
     {
         final String  assetGUIDParameter = "assetGUID";
 
-        this.saveAssociatedSchemaType(userId,
+       return this.saveAssociatedSchemaType(userId,
                                       this.retrieveAssetFromRepositoryByGUID(userId,
                                                                              assetGUID,
                                                                              assetGUIDParameter,
@@ -570,12 +571,13 @@ public class AssetHandler
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
+     * @return
      */
-    private  void saveAssociatedSchemaType(String                  userId,
-                                          Asset                    asset,
-                                          SchemaType               schemaType,
-                                          List<SchemaAttribute>    schemaAttributes,
-                                          String                   methodName) throws InvalidParameterException,
+    private String saveAssociatedSchemaType(String                  userId,
+                                            Asset                    asset,
+                                            SchemaType               schemaType,
+                                            List<SchemaAttribute>    schemaAttributes,
+                                            String                   methodName) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
     {
@@ -608,8 +610,11 @@ public class AssetHandler
                                                          null,
                                                          methodName);
                 }
+
+                return schemaTypeGUID;
             }
         }
+        return null;
     }
 
 

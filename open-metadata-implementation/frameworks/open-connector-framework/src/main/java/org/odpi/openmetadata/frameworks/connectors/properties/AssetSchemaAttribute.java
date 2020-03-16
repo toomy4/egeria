@@ -306,7 +306,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
                 "schemaAttributeBean=" + schemaAttributeBean +
                 ", localSchemaType=" + localSchemaType +
                 ", externalSchemaLink=" + externalSchemaLink +
-                ", parentAsset=" + parentAsset +
+                ", parentAsset=" + parentAsset.getAssetName() +
                 ", attributeName='" + getAttributeName() + '\'' +
                 ", elementPosition=" + getElementPosition() +
                 ", cardinality='" + getCardinality() + '\'' +
