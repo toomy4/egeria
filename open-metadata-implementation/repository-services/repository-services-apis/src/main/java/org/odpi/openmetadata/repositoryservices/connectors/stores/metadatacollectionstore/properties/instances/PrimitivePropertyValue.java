@@ -76,7 +76,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
      */
     public  String valueAsString()
     {
-        return primitiveValue.toString();
+        return String.valueOf(primitiveValue);
     }
 
 

@@ -200,6 +200,15 @@ public class AssetOwnerResource
         return restAPI.addSchemaAttributesToSchema(serverName, userId, schemaTypeGUID, schemaAttributes.getSchemaAttributes());
     }
 
+    @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}")
+    public VoidResponse updateSchemaAttribute(@PathVariable String                 serverName,
+                                              @PathVariable String                 userId,
+                                              @PathVariable String                 schemaAttributeGUID,
+                                              @RequestBody  SchemaAttribute        schemaAttribute)
+    {
+        return restAPI.updateSchemaAttribute(serverName, userId, schemaAttributeGUID, schemaAttribute);
+    }
+
 
 
     /**
