@@ -388,6 +388,15 @@ public class AssetOwnerResource
         return restAPI.addAssetOrigin(serverName, userId, assetGUID, requestBody);
     }
 
+    @PostMapping(path = "/assets/{assetGUID}/relationships")
+    public VoidResponse  addAssetRelationship(@PathVariable String                  serverName,
+                                              @PathVariable String                  userId,
+                                              @PathVariable String                  assetGUID,
+                                              @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.addAssetRelationship(serverName, userId, assetGUID, requestBody);
+    }
+
 
     /**
      * Remove the asset origin classification to an asset.

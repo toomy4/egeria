@@ -17,12 +17,11 @@ import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.Disc
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.StatusRequestBody;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -731,6 +730,51 @@ public class AssetOwnerRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+
+    public VoidResponse  addAssetRelationship(String                  serverName,
+                                              String                  userId,
+                                              String                  anchorAssetGUID,
+                                              RelationshipRequestBody requestBody)
+    {
+        final String   methodName = "addAssetRelationship";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                RepositoryHandler handler = instanceHandler.getRepositoryHandler(userId, serverName, methodName);
+
+                handler.ensureRelationship(userId,
+                                           "all",
+                                           anchorAssetGUID,
+                                           requestBody.getTargetAssetGUID(),
+                                           requestBody.getRelationshipTypeGUID(),
+                                           "all",
+                                           null,
+                                           methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
 
 
     /**

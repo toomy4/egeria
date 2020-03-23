@@ -338,6 +338,31 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                                         schemaTypeGUID);
     }
 
+    public void   updateSchemaAttribute(String                 userId,
+                                        String                 schemaAttributeGUID,
+                                        SchemaAttribute        schemaAttribute) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String   methodName = "updateSchemaAttribute";
+
+//        final String   schemaTypeGUIDParameter = "schemaAttributeGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/schema-types/{2}/schema-attributes";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+//        invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameter, methodName);
+
+//        SchemaRequestBody  requestBody = new SchemaRequestBody();
+//        requestBody.setSchemaAttributes(schemaAttributes);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        schemaAttribute,
+                                        serverName,
+                                        userId,
+                                        schemaAttributeGUID);
+    }
+
 
     /**
      * Adds a connection to an asset.  Assets can have multiple connections attached.
@@ -501,6 +526,33 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         OriginRequestBody requestBody = new OriginRequestBody();
         requestBody.setBusinessCapabilityGUID(businessCapabilityGUID);
         requestBody.setOrganizationGUID(organizationGUID);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
+    }
+
+    public void  addAssetRelationship(String                userId,
+                                      String                assetGUID,
+                                      String                targetAssetGUID,
+                                      String                relationshipTypeGUID) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String   methodName = "addAssetRelationship";
+        final String   assetGUIDParameter = "assetGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/relationships";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(targetAssetGUID, assetGUIDParameter, methodName);
+
+        RelationshipRequestBody requestBody = new RelationshipRequestBody();
+        requestBody.setTargetAssetGUID(targetAssetGUID);
+        requestBody.setRelationshipTypeGUID(relationshipTypeGUID);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
