@@ -2416,7 +2416,7 @@
                         <exclude>**/**.code-workspace</exclude>
                         <exclude>config</exclude>
                         <exclude>**/LICENSE*.txt</exclude>
-                        <exclude>\?</exclude>
+                        <exclude>\\?/**</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
@@ -2482,7 +2482,7 @@
             </plugin>
 
             <!-- Check no unnecessary or missing dependencies           -->
-            <!-- Note test scope dependencies can't be reliably checked -->
+            <!-- Note test.xml scope dependencies can't be reliably checked -->
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
@@ -2495,13 +2495,13 @@
                             <failOnWarning>true</failOnWarning>
                             <outputXML>true</outputXML>
                             <ignoredUnusedDeclaredDependencies>
-                                <!-- Test dependencies - should only be used in test scope. False positive from dependency check -->
+                                <!-- Test dependencies - should only be used in test.xml scope. False positive from dependency check -->
                                 <ignoredUnusedDeclaredDependency>org.junit.jupiter:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.mockito:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.testng:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>junit:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
-                                <!-- Used with slf4j as default implementation in test scope only -->
+                                <!-- Used with slf4j as default implementation in test.xml scope only -->
                                 <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic:*
                                 </ignoredUnusedDeclaredDependency>
                                 <!-- Used with slf4j as default implementation for chassis & apps (more configurable in xml)-->

@@ -25,17 +25,17 @@ resources:
           - master
 
 stages:
-  - stage: test
-    displayName: test
+  - stage: test.xml
+    displayName: test.xml
     jobs:
-      - deployment: test
+      - deployment: test.xml
         # define 4 more variables: aks, aksSpId, aksSpSecret and aksSpTenantId
         variables:
         k8sNamespace: 'egeria'
         displayName: deploy helm chart into AKS
         pool:
           vmImage: 'ubuntu-latest'
-        environment: test-$(projectName)
+        environment: test.xml-$(projectName)
         strategy:
           runOnce:
             deploy:
