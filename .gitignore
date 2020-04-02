@@ -116,7 +116,7 @@ open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/ma
 
 # Ignore private maven repo (jenkins)
 .repository
-.m2/repository/**
+.cache/**
 \?
 
 # Ignore sub-charts
