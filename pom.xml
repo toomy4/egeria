@@ -2076,11 +2076,11 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
+            <id>ria-maven</id>
             <url>https://nexus.ria.ee/repository/riha-maven-mixed-local/</url>
         </snapshotRepository>
         <repository>
-            <id>ossrh</id>
+            <id>ria-maven</id>
             <url>https://nexus.ria.ee/repository/riha-maven-mixed-local/</url>
         </repository>
     </distributionManagement>
