@@ -39,42 +39,49 @@
         <apache.ranger.version>1.2.0</apache.ranger.version>
         <apache.solr.version>7.7.2</apache.solr.version>
     </properties>
-    <build>
-        <plugins>
-            <!-- If we get to run this module we MUST have the repo set, otherwise docker
-      push will fail, and there's no useful default -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce-property</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireProperty>
-                                    <property>docker.registry</property>
-                                    <message>You must specify a docker registry to use via '-Ddocker.registry=xxxxx!
-                                    </message>
-                                </requireProperty>
-                                <requireProperty>
-                                    <property>docker.repo</property>
-                                    <message>You must specify a docker repository to use via '-Ddocker.repo=xxxxx!
-                                    </message>
-                                </requireProperty>
-                            </rules>
-                            <fail>true</fail>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
     <!-- Set docker.images to 'core' for base images only, 'ext' for only extended images, otherwise all will be built -->
     <profiles>
+        <profile>
+            <id>docker</id>
+
+            <build>
+                <plugins>
+                    <!-- If we get to run this module we MUST have the repo set, otherwise docker
+                                     push will fail, and there's no useful default -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>enforce-property</id>
+                                <goals>
+                                    <goal>enforce</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <requireProperty>
+                                            <property>docker.registry</property>
+                                            <message>You must specify a docker registry to use via
+                                                '-Ddocker.registry=xxxxx!
+                                            </message>
+                                        </requireProperty>
+                                        <requireProperty>
+                                            <property>docker.repo</property>
+                                            <message>You must specify a docker repository to use via
+                                                '-Ddocker.repo=xxxxx!
+                                            </message>
+                                        </requireProperty>
+                                    </rules>
+                                    <fail>true</fail>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <profile>
             <id>extended images</id>
             <activation>
