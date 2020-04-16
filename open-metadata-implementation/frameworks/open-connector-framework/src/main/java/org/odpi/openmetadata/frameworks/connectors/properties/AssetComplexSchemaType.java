@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchemaType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 import java.util.Objects;
 
@@ -12,8 +11,12 @@ import java.util.Objects;
  * An asset's schema provides information about how the asset structures the data it supports.
  * The AssetComplexSchemaType object describes a nested structure of schema attributes and types.
  */
-public class AssetComplexSchemaType extends AssetSchemaType {
-    protected AssetSchemaAttributes schemaAttributes = null;
+public  class AssetComplexSchemaType extends AssetSchemaType
+{
+    private static final long     serialVersionUID = 1L;
+
+    protected ComplexSchemaType     complexSchemaTypeBean = null;
+    protected AssetSchemaAttributes schemaAttributes      = null;
 
 
     /**
@@ -21,38 +24,38 @@ public class AssetComplexSchemaType extends AssetSchemaType {
      *
      * @param parentAsset descriptor of asset that this property relates to.
      */
-    protected AssetComplexSchemaType(AssetDescriptor parentAsset) {
+    protected AssetComplexSchemaType(AssetDescriptor parentAsset)
+    {
         super(parentAsset);
     }
+
 
 
     /**
      * Bean constructor
      *
-     * @param schemaBean       bean containing the schema properties
-     * @param schemaAttributes the attributes that make up this schema
+     * @param schemaBean bean containing the schema properties
      */
-    public AssetComplexSchemaType(SchemaType schemaBean,
-                                  AssetSchemaAttributes schemaAttributes) {
+    public AssetComplexSchemaType(ComplexSchemaType schemaBean)
+    {
         super(schemaBean);
 
-        this.schemaAttributes = schemaAttributes;
+        this.complexSchemaTypeBean = schemaBean;
     }
 
 
     /**
      * Bean constructor with parent asset
      *
-     * @param parentAsset      descriptor for parent asset
-     * @param schemaBean       bean containing the schema properties
-     * @param schemaAttributes the attributes that make up this schema
+     * @param parentAsset descriptor for parent asset
+     * @param schemaBean bean containing the schema properties
      */
-    public AssetComplexSchemaType(AssetDescriptor parentAsset,
-                                  ComplexSchemaType schemaBean,
-                                  AssetSchemaAttributes schemaAttributes) {
+    public AssetComplexSchemaType(AssetDescriptor       parentAsset,
+                                  ComplexSchemaType     schemaBean)
+    {
         super(parentAsset, schemaBean);
 
-        this.schemaAttributes = schemaAttributes;
+        this.complexSchemaTypeBean = schemaBean;
     }
 
 
@@ -61,14 +64,17 @@ public class AssetComplexSchemaType extends AssetSchemaType {
      * likely to be being cloned in the same operation and we want the definitions clone to point to the
      * asset clone and not the original asset.
      *
-     * @param parentAsset    description of the asset that this schema is attached to.
-     * @param templateSchema template object to copy.
+     * @param parentAsset description of the asset that this schema is attached to.
+     * @param template template object to copy.
      */
-    public AssetComplexSchemaType(AssetDescriptor parentAsset, AssetComplexSchemaType templateSchema) {
-        super(parentAsset, templateSchema);
+    public AssetComplexSchemaType(AssetDescriptor parentAsset, AssetComplexSchemaType template)
+    {
+        super(parentAsset, template);
 
-        if (templateSchema != null) {
-            this.schemaAttributes = templateSchema.getSchemaAttributes(super.getParentAsset());
+        if (template != null)
+        {
+            this.complexSchemaTypeBean = template.getComplexSchemaTypeBean();
+            this.schemaAttributes = template.getSchemaAttributes(parentAsset);
         }
     }
 
@@ -78,8 +84,20 @@ public class AssetComplexSchemaType extends AssetSchemaType {
      *
      * @param bean bean containing the schema properties
      */
-    protected void setBean(ComplexSchemaType bean) {
+    protected void  setBean(ComplexSchemaType bean)
+    {
         super.setBean(bean);
+    }
+
+
+    /**
+     * Return the bean with all of the properties.
+     *
+     * @return complex element bean
+     */
+    protected ComplexSchemaType getComplexSchemaTypeBean()
+    {
+        return complexSchemaTypeBean;
     }
 
 
@@ -88,12 +106,14 @@ public class AssetComplexSchemaType extends AssetSchemaType {
      *
      * @return SchemaAttributes
      */
-    public AssetSchemaAttributes getSchemaAttributes() {
-        if (schemaAttributes == null) {
+    public AssetSchemaAttributes getSchemaAttributes()
+    {
+        if (schemaAttributes == null)
+        {
             return null;
-        } else {
-            return schemaAttributes.cloneIterator(super.getParentAsset());
         }
+
+        return getSchemaAttributes(parentAsset);
     }
 
 
@@ -103,10 +123,14 @@ public class AssetComplexSchemaType extends AssetSchemaType {
      * @param parentAsset description of the asset that this schema is attached to.
      * @return SchemaAttributes
      */
-    protected AssetSchemaAttributes getSchemaAttributes(AssetDescriptor parentAsset) {
-        if (schemaAttributes == null) {
+    protected AssetSchemaAttributes getSchemaAttributes(AssetDescriptor parentAsset)
+    {
+        if (schemaAttributes == null)
+        {
             return null;
-        } else {
+        }
+        else
+        {
             return schemaAttributes.cloneIterator(parentAsset);
         }
     }
@@ -121,7 +145,8 @@ public class AssetComplexSchemaType extends AssetSchemaType {
      */
     @Override
 
-    protected AssetSchemaType cloneAssetSchemaType(AssetDescriptor parentAsset) {
+    protected AssetSchemaType cloneAssetSchemaType(AssetDescriptor parentAsset)
+    {
         return new AssetComplexSchemaType(parentAsset, this);
     }
 
@@ -132,7 +157,8 @@ public class AssetComplexSchemaType extends AssetSchemaType {
      * @return print out of variables in a JSON-style
      */
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "AssetComplexSchemaType{" +
                 "schemaAttributes=" + schemaAttributes +
                 ", parentAsset=" + parentAsset.getAssetName() +
@@ -160,14 +186,18 @@ public class AssetComplexSchemaType extends AssetSchemaType {
      * @return boolean result of comparison
      */
     @Override
-    public boolean equals(Object objectToCompare) {
-        if (this == objectToCompare) {
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass()) {
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
             return false;
         }
-        if (!super.equals(objectToCompare)) {
+        if (!super.equals(objectToCompare))
+        {
             return false;
         }
         AssetComplexSchemaType that = (AssetComplexSchemaType) objectToCompare;
