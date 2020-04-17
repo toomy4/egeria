@@ -98,6 +98,8 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             attributeRelationships = template.getAttributeRelationships();
             nativeJavaClass = template.getNativeJavaClass();
             aliases = template.getAliases();
+
+            additionalProperties = template.getAdditionalProperties();
         }
     }
 
@@ -118,6 +120,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
         }
 
         clone.setAttributeName(this.getAttributeName());
+        clone.setQualifiedName(this.getQualifiedName());
         clone.setElementPosition(this.getElementPosition());
         clone.setMinCardinality(this.getMinCardinality());
         clone.setMaxCardinality(this.getMaxCardinality());
@@ -134,6 +137,8 @@ public class SchemaAttributeProperties extends SchemaElementProperties
         clone.setAttributeRelationships(getAttributeRelationships());
         clone.setNativeJavaClass(getNativeJavaClass());
         clone.setAliases(this.getAliases());
+
+        clone.setAdditionalProperties(this.getAdditionalProperties());
 
         return clone;
     }

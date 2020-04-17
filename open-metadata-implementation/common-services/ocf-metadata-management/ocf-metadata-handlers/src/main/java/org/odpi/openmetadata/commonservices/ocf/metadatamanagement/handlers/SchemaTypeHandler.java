@@ -33,31 +33,34 @@ public class SchemaTypeHandler
     private OMRSRepositoryHelper    repositoryHelper;
     private RepositoryHandler       repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
+    private final MeaningHandler meaningHandler;
     private LastAttachmentHandler   lastAttachmentHandler;
 
 
     /**
      * Construct the handler information needed to interact with the repository services
-     *
-     * @param serviceName      name of this service
+     *  @param serviceName      name of this service
      * @param serverName       name of the local server
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param meaningHandler
      * @param lastAttachmentHandler handler for recording last attachment
      */
-    public SchemaTypeHandler(String                  serviceName,
-                             String                  serverName,
+    public SchemaTypeHandler(String serviceName,
+                             String serverName,
                              InvalidParameterHandler invalidParameterHandler,
-                             RepositoryHandler       repositoryHandler,
-                             OMRSRepositoryHelper    repositoryHelper,
-                             LastAttachmentHandler   lastAttachmentHandler)
+                             RepositoryHandler repositoryHandler,
+                             OMRSRepositoryHelper repositoryHelper,
+                             MeaningHandler meaningHandler,
+                             LastAttachmentHandler lastAttachmentHandler)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
+        this.meaningHandler = meaningHandler;
         this.lastAttachmentHandler = lastAttachmentHandler;
     }
 
@@ -326,6 +329,12 @@ public class SchemaTypeHandler
                                                                     properties,
                                                                     methodName);
 
+            // RIA: fix
+            if(typeName == null) {
+                typeName = schemaTypeEntity.getType().getTypeDefName();
+            }
+
+
             if (properties != null)
             {
                 /*
@@ -388,6 +397,11 @@ public class SchemaTypeHandler
                                                                     SchemaElementMapper.TYPE_NAME_PROPERTY_NAME,
                                                                     properties,
                                                                     methodName);
+
+            // RIA hack
+            if(typeName==null) {
+                typeName="ComplexSchemaType";
+            }
 
             if (properties != null)
             {
@@ -608,22 +622,22 @@ public class SchemaTypeHandler
             {
                 if (schemaAttributeEntity != null)
                 {
-                    EntityDetail  attributeTypeEntity = repositoryHandler.getEntityForRelationshipType(userId,
-                                                                                                       schemaAttributeEntity.getGUID(),
-                                                                                                       SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                                                                       SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
-                                                                                                       SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
-                                                                                                       methodName);
-                    SchemaType   attributeType = null;
-                    if (attributeTypeEntity != null)
-                    {
-                        attributeType = this.getSchemaTypeForAttribute(userId, attributeTypeEntity, methodName);
-                    }
+                    SchemaType   attributeType = this.getSchemaTypeForAttribute(userId, schemaAttributeEntity, methodName);
+
+                    // TODO ria impl
+                    List<Meaning> meanings = meaningHandler.getMeanings(
+                            userId,
+                            schemaAttributeEntity.getGUID(),
+                            0,
+                            1000,// completely arbitrary limit to meanings per attribute
+                            methodName
+                    );
 
                     SchemaAttributeConverter converter = new SchemaAttributeConverter(schemaAttributeEntity,
                                                                                       attributeType,
                                                                                       null,  // TODO
                                                                                       null,  // TODO
+                                                                                      meanings, // TODO ria impl
                                                                                       repositoryHelper,
                                                                                       serviceName);
                     results.add(converter.getBean());
@@ -761,17 +775,26 @@ public class SchemaTypeHandler
         {
             schemaAttributeGUID = addSchemaAttribute(userId, schemaAttribute);
 
-            repositoryHandler.createRelationship(userId,
-                                                 SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                 schemaTypeGUID,
-                                                 schemaAttributeGUID,
-                                                 null,
-                                                 methodName);
+//            repositoryHandler.createRelationship(userId,
+//                                                 SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+//                                                 schemaTypeGUID,
+//                                                 schemaAttributeGUID,
+//                                                 null,
+//                                                 methodName);
         }
         else
         {
             updateSchemaAttribute(userId, schemaAttributeGUID, schemaAttribute);
         }
+
+        repositoryHandler.ensureRelationship(userId,
+                null,
+                schemaTypeGUID,
+                schemaAttributeGUID,
+                SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                null,
+                null,
+                methodName);
 
         return schemaAttributeGUID;
     }
@@ -1001,25 +1024,25 @@ public class SchemaTypeHandler
 
         if (schemaType != null)
         {
-            if ((schemaType.getExtendedProperties() == null) &&
-                    ((schemaType instanceof ComplexSchemaType) ||
-                     (schemaType instanceof LiteralSchemaType) ||
-                     (schemaType instanceof SimpleSchemaType)))
-            {
-                /*
-                 * The schema type can be represented as a classification on the schema attribute.
-                 */
-                SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(schemaType);
-
-                repositoryHandler.classifyEntity(userId,
-                                                 schemaAttributeGUID,
-                                                 SchemaElementMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
-                                                 SchemaElementMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
-                                                 schemaTypeBuilder.getInstanceProperties(methodName),
-                                                 methodName);
-            }
-            else
-            {
+//            if ((schemaType.getExtendedProperties() == null) &&
+//                    ((schemaType instanceof ComplexSchemaType) ||
+//                     (schemaType instanceof LiteralSchemaType) ||
+//                     (schemaType instanceof SimpleSchemaType)))
+//            {
+//                /*
+//                 * The schema type can be represented as a classification on the schema attribute.
+//                 */
+//                SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(schemaType);
+//
+//                repositoryHandler.classifyEntity(userId,
+//                                                 schemaAttributeGUID,
+//                                                 SchemaElementMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+//                                                 SchemaElementMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+//                                                 schemaTypeBuilder.getInstanceProperties(methodName),
+//                                                 methodName);
+//            }
+//            else
+//            {
                 String schemaTypeGUID = addSchemaType(userId, schemaType);
                 if (schemaTypeGUID != null)
                 {
@@ -1030,7 +1053,7 @@ public class SchemaTypeHandler
                                                          null,
                                                          methodName);
                 }
-            }
+//            }
         }
         else if (schemaAttribute.getExternalAttributeType() != null)
         {

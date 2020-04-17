@@ -6,6 +6,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.SchemaAttributesResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaLink;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
@@ -164,7 +165,21 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                 {
                     if (schemaAttribute != null)
                     {
-                        resultList.add(new AssetSchemaAttribute(connectedAsset, schemaAttribute));
+                        // RIA: hack to keep connected chain going for deep schemas.
+                        SchemaType attributeType = schemaAttribute.getAttributeType();
+                        AssetSchemaType assetSchemaType = null;
+                        if(attributeType instanceof ComplexSchemaType) {
+                            assetSchemaType = new ConnectedAssetComplexSchemaType(
+                                    serviceName, serverName, omasServerURL, userId,
+                                    (ConnectedAssetUniverse) parentAsset,
+                                    100,
+                                    (ComplexSchemaType)attributeType,
+                                    restClient
+                            );
+                        }
+
+
+                        resultList.add(new AssetSchemaAttribute(connectedAsset, schemaAttribute, assetSchemaType));
                     }
                 }
 

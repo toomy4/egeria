@@ -272,9 +272,9 @@ public class AssetUniverse extends AssetDetail
     public String toString()
     {
         return "AssetUniverse{" +
-                "assetBean=" + assetBean +
+                "assetBean=" + assetBean.getGUID() +
                 ", assetMeanings=" + meanings +
-                ", schema=" + schema +
+                ", schema=" + schema.getGUID() +
                 ", feedback=" + feedback +
                 ", knownLocations=" + knownLocations +
                 ", lineage=" + lineage +

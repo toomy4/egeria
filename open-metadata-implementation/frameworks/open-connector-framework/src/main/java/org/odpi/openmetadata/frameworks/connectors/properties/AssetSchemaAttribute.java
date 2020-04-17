@@ -23,7 +23,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
     private static final long     serialVersionUID = 1L;
 
     protected SchemaAttribute schemaAttributeBean;
-
+    protected AssetSchemaType schemaAttributeType;
 
     /**
      * Bean constructor used by subclasses
@@ -54,6 +54,13 @@ public class AssetSchemaAttribute extends AssetReferenceable
     public AssetSchemaAttribute(AssetDescriptor parentAsset,
                                 SchemaAttribute schemaAttributeBean)
     {
+        this(parentAsset,schemaAttributeBean, null);
+    }
+
+    public AssetSchemaAttribute(AssetDescriptor parentAsset,
+                                SchemaAttribute schemaAttributeBean,
+                                AssetSchemaType schemaAttributeType)
+    {
         super(parentAsset, schemaAttributeBean);
 
         if (schemaAttributeBean == null)
@@ -64,6 +71,8 @@ public class AssetSchemaAttribute extends AssetReferenceable
         {
             this.schemaAttributeBean = schemaAttributeBean;
         }
+
+        this.schemaAttributeType=schemaAttributeType;
     }
 
 
@@ -84,6 +93,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
         else
         {
             this.schemaAttributeBean = template.getSchemaAttributeBean();
+            this.schemaAttributeType= template.getSchemaAttributeType();
         }
     }
 
@@ -222,6 +232,10 @@ public class AssetSchemaAttribute extends AssetReferenceable
     }
 
 
+    public AssetSchemaType getSchemaAttributeType() {
+        return schemaAttributeType;
+    }
+
     /**
      * Return the SchemaType that relates to the type of this attribute.  It is possible to query its type and cast it to
      * specific types of schema type to retrieve all of the values.
@@ -230,6 +244,9 @@ public class AssetSchemaAttribute extends AssetReferenceable
      */
     public AssetSchemaType getAttributeType()
     {
+        if(schemaAttributeType!=null)
+            return schemaAttributeType;
+
         if ((schemaAttributeBean != null) && (schemaAttributeBean.getAttributeType() != null))
         {
             return AssetSchemaType.createAssetSchemaType(parentAsset, schemaAttributeBean.getAttributeType());

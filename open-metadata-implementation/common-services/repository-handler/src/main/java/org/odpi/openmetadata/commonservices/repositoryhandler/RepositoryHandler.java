@@ -2365,17 +2365,10 @@ public class RepositoryHandler
 
             if ((relationships == null) || (relationships.isEmpty()))
             {
-                errorHandler.handleNoRelationship(anchorEntityGUID,
-                                                  anchorEntityTypeName,
-                                                  relationshipTypeName,
-                                                  methodName);
+               return null;
             }
 
             return relationships;
-        }
-        catch (PropertyServerException  error)
-        {
-            throw error;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {

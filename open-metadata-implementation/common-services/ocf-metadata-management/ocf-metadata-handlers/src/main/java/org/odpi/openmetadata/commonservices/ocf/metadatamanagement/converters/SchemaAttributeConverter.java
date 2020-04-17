@@ -21,6 +21,7 @@ public class SchemaAttributeConverter extends ReferenceableConverter
     private SchemaType                        attributeType;
     private SchemaLink                        externalAttributeType;
     private List<SchemaAttributeRelationship> attributeRelationships;
+    private List<Meaning>                     meanings;
 
     /**
      * Constructor captures the initial content
@@ -36,6 +37,7 @@ public class SchemaAttributeConverter extends ReferenceableConverter
                                     SchemaType                        attributeType,
                                     SchemaLink                        externalAttributeType,
                                     List<SchemaAttributeRelationship> attributeRelationships,
+                                    List<Meaning>                     meanings,
                                     OMRSRepositoryHelper              repositoryHelper,
                                     String                            serviceName)
     {
@@ -46,6 +48,7 @@ public class SchemaAttributeConverter extends ReferenceableConverter
         this.attributeType = attributeType;
         this.externalAttributeType = externalAttributeType;
         this.attributeRelationships = attributeRelationships;
+        this.meanings=meanings;
     }
 
     
@@ -68,6 +71,7 @@ public class SchemaAttributeConverter extends ReferenceableConverter
             bean.setAttributeType(attributeType);
             bean.setExternalAttributeType(externalAttributeType);
             bean.setAttributeRelationships(attributeRelationships);
+            bean.setMeanings(meanings);
 
             InstanceProperties instanceProperties = entity.getProperties();
 

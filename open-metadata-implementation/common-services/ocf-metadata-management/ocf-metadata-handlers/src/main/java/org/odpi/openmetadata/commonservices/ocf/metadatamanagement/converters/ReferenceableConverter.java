@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -18,6 +19,8 @@ import java.util.List;
  */
 public class ReferenceableConverter extends ElementHeaderConverter
 {
+    private List<Meaning> meanings;
+
     /**
      * Constructor captures the initial content
      *
@@ -49,6 +52,15 @@ public class ReferenceableConverter extends ElementHeaderConverter
         super(entity, relationship, repositoryHelper, serviceName);
     }
 
+    public ReferenceableConverter(EntityDetail assetEntity,
+                                  Relationship connectionToAssetRelationship,
+                                  List<Meaning> meanings,
+                                  OMRSRepositoryHelper repositoryHelper,
+                                  String serviceName) {
+        super(assetEntity, connectionToAssetRelationship, repositoryHelper, serviceName);
+        this.meanings = meanings;
+    }
+
 
     /**
      * Set up the bean to convert.
@@ -62,6 +74,7 @@ public class ReferenceableConverter extends ElementHeaderConverter
             super.updateBean(bean);
 
             bean.setClassifications(this.getClassificationsFromEntity());
+            bean.setMeanings(this.meanings);
         }
     }
 

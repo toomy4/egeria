@@ -148,7 +148,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
         this.ratingHandler             = new RatingHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.referenceableHandler      = new ReferenceableHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.relatedMediaHandler       = new RelatedMediaHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
-        this.schemaTypeHandler         = new SchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.schemaTypeHandler         = new SchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, meaningHandler, lastAttachmentHandler);
         this.validValuesHandler        = new ValidValuesHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
 
         this.assetHandler              = new AssetHandler(serviceName,
@@ -170,6 +170,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                                           noteLogHandler,
                                                           ratingHandler,
                                                           relatedMediaHandler,
+                                                          meaningHandler,
                                                           schemaTypeHandler,
                                                           supportedZones,
                                                           defaultZones);

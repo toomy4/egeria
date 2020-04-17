@@ -83,6 +83,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
         ElementType   type = new ElementType();
 
         type.setElementTypeName(this.typeName);
+        type.setElementTypeId(this.typeGuid);
 
         clone.setType(type);
         clone.setClassifications(this.getClassifications());

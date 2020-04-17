@@ -245,6 +245,7 @@ public class OCFMetadataRESTServices
             List<String>  supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName);
 
             AssetHandler assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (connectionGUID != null)

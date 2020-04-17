@@ -49,6 +49,7 @@ public class AssetHandler
     private NoteLogHandler            noteLogHandler;
     private RatingHandler             ratingHandler;
     private RelatedMediaHandler       relatedMediaHandler;
+    private final MeaningHandler meaningHandler;
     private SchemaTypeHandler         schemaTypeHandler;
 
     private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
@@ -59,8 +60,7 @@ public class AssetHandler
 
     /**
      * Construct the asset handler with information needed to work with Asset objects.
-     *
-     * @param serviceName name of this service
+     *  @param serviceName name of this service
      * @param serverName name of the local server
      * @param localServerUserId name of the userId for system initiated updates to assets.
      * @param invalidParameterHandler handler for managing parameter errors
@@ -79,32 +79,34 @@ public class AssetHandler
      * @param noteLogHandler  handler for note log objects
      * @param ratingHandler  handler for rating objects
      * @param relatedMediaHandler  handler for related media objects
+     * @param meaningHandler
      * @param schemaTypeHandler  handler for schemaType objects
      * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
      * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
      */
-    public AssetHandler(String                    serviceName,
-                        String                    serverName,
-                        String                    localServerUserId,
-                        InvalidParameterHandler   invalidParameterHandler,
-                        RepositoryHandler         repositoryHandler,
-                        OMRSRepositoryHelper      repositoryHelper,
-                        CertificationHandler      certificationHandler,
-                        CommentHandler            commentHandler,
-                        ConnectionHandler         connectionHandler,
-                        EndpointHandler           endpointHandler,
+    public AssetHandler(String serviceName,
+                        String serverName,
+                        String localServerUserId,
+                        InvalidParameterHandler invalidParameterHandler,
+                        RepositoryHandler repositoryHandler,
+                        OMRSRepositoryHelper repositoryHelper,
+                        CertificationHandler certificationHandler,
+                        CommentHandler commentHandler,
+                        ConnectionHandler connectionHandler,
+                        EndpointHandler endpointHandler,
                         ExternalIdentifierHandler externalIdentifierHandler,
-                        ExternalReferenceHandler  externalReferenceHandler,
-                        InformalTagHandler        informalTagHandler,
-                        LicenseHandler            licenseHandler,
-                        LikeHandler               likeHandler,
-                        LocationHandler           locationHandler,
-                        NoteLogHandler            noteLogHandler,
-                        RatingHandler             ratingHandler,
-                        RelatedMediaHandler       relatedMediaHandler,
-                        SchemaTypeHandler         schemaTypeHandler,
-                        List<String>              supportedZones,
-                        List<String>              defaultZones)
+                        ExternalReferenceHandler externalReferenceHandler,
+                        InformalTagHandler informalTagHandler,
+                        LicenseHandler licenseHandler,
+                        LikeHandler likeHandler,
+                        LocationHandler locationHandler,
+                        NoteLogHandler noteLogHandler,
+                        RatingHandler ratingHandler,
+                        RelatedMediaHandler relatedMediaHandler,
+                        MeaningHandler meaningHandler,
+                        SchemaTypeHandler schemaTypeHandler,
+                        List<String> supportedZones,
+                        List<String> defaultZones)
     {
         this.serviceName               = serviceName;
         this.repositoryHelper          = repositoryHelper;
@@ -125,6 +127,7 @@ public class AssetHandler
         this.noteLogHandler            = noteLogHandler;
         this.ratingHandler             = ratingHandler;
         this.relatedMediaHandler       = relatedMediaHandler;
+        this.meaningHandler            = meaningHandler;
         this.schemaTypeHandler         = schemaTypeHandler;
         this.supportedZones            = supportedZones;
         this.defaultZones              = defaultZones;
@@ -1894,8 +1897,12 @@ public class AssetHandler
                                                                                   AssetMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                                   methodName);
 
+        List<Meaning> meanings = meaningHandler.getMeanings(userId, assetGUID, 0, 1000, methodName);
+
+
         AssetConverter assetConverter = new AssetConverter(assetEntity,
                                                            relationship,
+                                                           meanings,
                                                            repositoryHelper,
                                                            methodName);
 

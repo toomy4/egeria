@@ -5,11 +5,13 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,7 +33,15 @@ public class AssetConverter extends ReferenceableConverter
                           OMRSRepositoryHelper repositoryHelper,
                           String               serviceName)
     {
-        super(assetEntity, connectionToAssetRelationship, repositoryHelper, serviceName);
+        this(assetEntity, connectionToAssetRelationship,null, repositoryHelper, serviceName);
+    }
+    public AssetConverter(EntityDetail         assetEntity,
+                          Relationship         connectionToAssetRelationship,
+                          List<Meaning>        meanings,
+                          OMRSRepositoryHelper repositoryHelper,
+                          String               serviceName)
+    {
+        super(assetEntity, connectionToAssetRelationship, meanings, repositoryHelper, serviceName);
     }
 
 

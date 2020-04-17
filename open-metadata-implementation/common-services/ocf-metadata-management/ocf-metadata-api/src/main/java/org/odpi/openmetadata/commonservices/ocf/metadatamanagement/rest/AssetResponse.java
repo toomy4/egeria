@@ -440,7 +440,6 @@ public class AssetResponse extends OCFOMASAPIResponse
         this.lastAttachment = lastAttachment;
     }
 
-
     /**
      * JSON-style toString
      *

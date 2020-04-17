@@ -170,7 +170,6 @@ public  class AssetComplexSchemaType extends AssetSchemaType
                 ", extendedProperties=" + getExtendedProperties() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +

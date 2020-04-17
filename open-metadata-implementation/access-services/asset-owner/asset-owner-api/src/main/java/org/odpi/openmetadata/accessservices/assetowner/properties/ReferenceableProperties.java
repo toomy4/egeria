@@ -31,6 +31,7 @@ public abstract class ReferenceableProperties implements Serializable
     private static final long    serialVersionUID = 1L;
 
     protected String               typeName             = null;
+    protected String               typeGuid             = null;
     protected List<Classification> classifications      = null;
     protected String               qualifiedName        = null;
     protected List<Meaning>        meanings             = null;
@@ -56,6 +57,7 @@ public abstract class ReferenceableProperties implements Serializable
         if (template != null)
         {
             this.typeName = template.getTypeName();
+            this.typeGuid = template.getTypeGuid();
             this.classifications = template.getClassifications();
             this.qualifiedName = template.getQualifiedName();
             this.meanings = template.getMeanings();
@@ -88,6 +90,14 @@ public abstract class ReferenceableProperties implements Serializable
         this.typeName = typeName;
     }
 
+
+    public String getTypeGuid() {
+        return typeGuid;
+    }
+
+    public void setTypeGuid(String typeGuid) {
+        this.typeGuid = typeGuid;
+    }
 
     /**
      * Return the classifications associated with this referenceable.
