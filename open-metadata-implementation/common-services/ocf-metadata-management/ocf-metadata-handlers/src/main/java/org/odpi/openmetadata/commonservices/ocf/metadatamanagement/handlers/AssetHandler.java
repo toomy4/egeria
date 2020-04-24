@@ -1643,6 +1643,47 @@ public class AssetHandler
         }
     }
 
+    public void updateAssetAdditionalProperties(String             userId,
+                                                String             assetGUID,
+                                                Map<String,String> requestBody,
+                                                String             methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String assetGUIDParameterName = "assetGUID";
+
+        AssetConverter converter = this.retrieveAssetConverterFromRepositoryByGUID(userId,
+                assetGUID,
+                assetGUIDParameterName,
+                null,
+                methodName);
+
+        Asset originalAsset = converter.getAssetBean();
+
+        if (originalAsset != null) {
+            invalidParameterHandler.validateAssetInSupportedZone(assetGUID,
+                    assetGUIDParameterName,
+                    originalAsset.getZoneMembership(),
+                    this.getSupportedZones(userId, serviceName),
+                    serviceName,
+                    methodName);
+
+            Asset updatedAsset = new Asset(originalAsset);
+
+            updatedAsset.setAdditionalProperties(requestBody);
+            updatedAsset.setLatestChange("New AdditionalProperties");
+
+            updateAsset(userId,
+                    originalAsset,
+                    converter.getAssetAuditHeader(),
+                    updatedAsset,
+                    null,
+                    null,
+                    null,
+                    methodName);
+        }
+    }
+
 
     /**
      * Update the latest change field in an asset because something has changed in the attached elements.

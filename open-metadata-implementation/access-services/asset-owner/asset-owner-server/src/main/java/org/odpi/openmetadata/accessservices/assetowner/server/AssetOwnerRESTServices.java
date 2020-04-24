@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * AssetOwner provides the generic client-side interface for the Asset Owner Open Metadata Access Service (OMAS).
@@ -1251,6 +1252,45 @@ public class AssetOwnerRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+    public VoidResponse  updateAssetAdditionalProperties(String             serverName,
+                                                         String             userId,
+                                                         String             assetGUID,
+                                                         Map<String,String> requestBody)
+    {
+        final String   methodName = "updateAssetAdditionalProperties";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                handler.updateAssetAdditionalProperties(userId,
+                                                        assetGUID,
+                                                        requestBody,
+                                                        methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
 
 
     /**

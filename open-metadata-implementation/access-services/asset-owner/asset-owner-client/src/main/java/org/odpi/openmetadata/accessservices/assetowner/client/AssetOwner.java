@@ -1092,6 +1092,29 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
     }
 
 
+    public void updateAssetAdditionalProperties(String    userId,
+                                                String    assetGUID,
+                                                Map<String,String> requestBody) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String   methodName = "updateAssetOwner";
+
+        final String   assetGUIDParameter = "assetGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/additionalProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        assetGUID);
+    }
+
+
     /*
      * ==============================================
      * AssetReviewInterface

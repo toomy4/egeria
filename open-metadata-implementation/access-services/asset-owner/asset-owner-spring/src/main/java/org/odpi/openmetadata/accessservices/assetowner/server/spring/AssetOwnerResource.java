@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttrib
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * AssetOwnerResource provides the generic server-side interface for the Asset Owner Open Metadata Access Service (OMAS).
@@ -664,6 +665,15 @@ public class AssetOwnerResource
                                           @RequestBody  OwnerRequestBody requestBody)
     {
         return restAPI.updateAssetOwner(serverName, userId, assetGUID, requestBody);
+    }
+
+    @PostMapping(path = "/assets/{assetGUID}/additionalProperties")
+    public VoidResponse  updateAssetAdditionalProperties(@PathVariable String             serverName,
+                                                         @PathVariable String             userId,
+                                                         @PathVariable String             assetGUID,
+                                                         @RequestBody  Map<String,String> additionalProperties)
+    {
+        return restAPI.updateAssetAdditionalProperties(serverName, userId, assetGUID, additionalProperties);
     }
 
 
