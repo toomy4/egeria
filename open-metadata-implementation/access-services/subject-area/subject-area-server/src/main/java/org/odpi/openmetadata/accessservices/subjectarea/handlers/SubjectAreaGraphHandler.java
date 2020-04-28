@@ -261,7 +261,9 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
                                         node.setQualifiedName((String) actualValue);
                                     }
                                 }
-                                break;
+
+                                // XXX: WTF?
+                                // break;
                             }
                         }   // end while
                         // change any subtypes into the NodeType value. for example subtypes of Category have NodeType Category
@@ -327,6 +329,12 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
         }
         if (oMRSRepositoryHelper.isTypeOf(methodName, typeDefName, "Project")) {
             nodeType = "Project";
+        }
+        if (oMRSRepositoryHelper.isTypeOf(methodName, typeDefName, "SchemaAttribute")) {
+            nodeType = "SchemaAttribute";
+        }
+        if (oMRSRepositoryHelper.isTypeOf(methodName, typeDefName, "SchemaType")) {
+            nodeType = "SchemaType";
         }
         List<Classification> classifications = entity.getClassifications();
         Set<String> classificationNames = null;

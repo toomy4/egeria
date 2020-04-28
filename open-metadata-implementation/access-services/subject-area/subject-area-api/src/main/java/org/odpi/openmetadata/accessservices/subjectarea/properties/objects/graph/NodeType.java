@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.grap
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
 
@@ -66,6 +65,10 @@ public enum NodeType implements Serializable {
      */
     Asset
     ,
+
+    SchemaAttribute,
+    SchemaType,
+
     /**
      * SubjectAreaDefinition
      */
