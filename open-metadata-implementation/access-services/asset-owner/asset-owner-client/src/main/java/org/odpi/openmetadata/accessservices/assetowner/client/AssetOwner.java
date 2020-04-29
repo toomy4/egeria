@@ -824,7 +824,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
         final String   assetGUIDParameter = "assetGUID";
         final String   glossaryTermParameter = "glossaryTermGUID";
         final String   assetURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/meanings/delete";
-        final String   elementURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/attachments/{3}/meanings{4}/delete";
+        final String   elementURLTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/attachments/{3}/meanings/{4}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);

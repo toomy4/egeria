@@ -851,12 +851,19 @@ public class AssetHandler
                                                  methodName,
                                                  assetElementGUIDParameter);
 
-            repositoryHandler.createRelationship(userId,
-                                                 ReferenceableMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                                 assetElementGUID,
-                                                 glossaryTermGUID,
-                                                 null,
-                                                 methodName);
+
+            repositoryHandler.removeRelationshipBetweenEntities(
+                    userId,
+                    ReferenceableMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                    ReferenceableMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+
+                    glossaryTermGUID,
+                    "Term",
+
+                    assetElementGUID,
+
+                    methodName
+            );
         }
     }
 
