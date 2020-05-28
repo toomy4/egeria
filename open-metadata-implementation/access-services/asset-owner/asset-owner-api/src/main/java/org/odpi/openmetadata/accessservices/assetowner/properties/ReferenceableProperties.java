@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.properties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
 
 import java.io.Serializable;
 import java.util.*;
@@ -58,6 +59,28 @@ public abstract class ReferenceableProperties implements Serializable
         {
             this.typeName = template.getTypeName();
             this.typeGuid = template.getTypeGuid();
+            this.classifications = template.getClassifications();
+            this.qualifiedName = template.getQualifiedName();
+            this.meanings = template.getMeanings();
+            this.additionalProperties = template.getAdditionalProperties();
+            this.extendedProperties = template.getExtendedProperties();
+        }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public ReferenceableProperties(Referenceable template)
+    {
+        if (template != null)
+        {
+            if (template.getType() != null)
+            {
+                this.typeName = template.getType().getElementTypeName();
+            }
             this.classifications = template.getClassifications();
             this.qualifiedName = template.getQualifiedName();
             this.meanings = template.getMeanings();

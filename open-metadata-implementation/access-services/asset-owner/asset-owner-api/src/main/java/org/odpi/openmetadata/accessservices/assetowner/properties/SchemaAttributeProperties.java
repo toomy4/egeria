@@ -30,6 +30,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 {
     private static final long    serialVersionUID = 1L;
 
+    protected String            guid                  = null;
     protected String            attributeName         = null;
     protected int               elementPosition       = 0;
 
@@ -119,6 +120,8 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             clone = new SchemaAttribute();
         }
 
+        clone.setGUID(this.getGuid());
+
         clone.setAttributeName(this.getAttributeName());
         clone.setQualifiedName(this.getQualifiedName());
         clone.setElementPosition(this.getElementPosition());
@@ -143,6 +146,14 @@ public class SchemaAttributeProperties extends SchemaElementProperties
         return clone;
     }
 
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
 
     /**
      * Return the name of this schema attribute.
