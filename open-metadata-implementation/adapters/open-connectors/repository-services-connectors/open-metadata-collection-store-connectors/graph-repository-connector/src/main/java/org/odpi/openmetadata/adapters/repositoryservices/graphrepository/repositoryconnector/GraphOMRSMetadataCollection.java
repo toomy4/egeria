@@ -104,6 +104,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         catch(RepositoryErrorException e) {
             log.error("{} could not create graph metadata collection for repository name {}", methodName, repositoryName);
             // Little point throwing the exception any higher here - the error has been logged at all levels;
+            log.error("",e);
         }
     }
 
