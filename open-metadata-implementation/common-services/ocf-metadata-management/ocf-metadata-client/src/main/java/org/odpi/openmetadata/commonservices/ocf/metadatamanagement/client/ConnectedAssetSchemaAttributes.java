@@ -172,7 +172,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                             assetSchemaType = new ConnectedAssetComplexSchemaType(
                                     serviceName, serverName, omasServerURL, userId,
                                     (ConnectedAssetUniverse) parentAsset,
-                                    100,
+                                    maxCacheSize,
                                     (ComplexSchemaType)attributeType,
                                     restClient
                             );
